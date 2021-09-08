@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace Hangman
 {
@@ -18,7 +19,7 @@ namespace Hangman
 
         static void ChooseWord()
         {
-            string[] words = new string[] { "car", "boat", "windsurfer", "automatic", "programming", "holiday", "christmas", "summer", "winter" };
+            string[] words = new string[] { "car", "boat", "windsurfer", "red", "program", "holiday", "christmas", "summer", "winter" };
             Random rand = new Random();
             int index = rand.Next(words.Length);
             string randomWord = words[index];
@@ -26,13 +27,19 @@ namespace Hangman
             Console.WriteLine(randomWord);
 
             GuessLetter(randomWord);
+
         }
 
         static void GuessLetter(String randomWord)
         {
 
+            StringBuilder wrongLetters = new StringBuilder();
             char[] lettersGuessed = new char[randomWord.Length];
-            Console.WriteLine("Guess a letter.");
+            //++Ability to add whole word
+            int nrOfGuesses = 0;
+            int letterCorrect = 0;
+            bool gameOver = false;
+            char playersGuess;
 
             for (int i = 0; i < randomWord.Length; i++)
             {
@@ -40,29 +47,51 @@ namespace Hangman
 
             }
 
-           int r = 0;
-           while (r <= randomWord.Length)
-           {
+           
+            while (!gameOver)
 
-                char playersGuess = char.Parse(Console.ReadLine());
+            {
+                Console.WriteLine("Guess a letter.");
+                playersGuess = char.Parse(Console.ReadLine());
+                nrOfGuesses++;
 
-                for (int j = 0; j < randomWord.Length; j++)
+                //++Exceptionhandling 
+
+
+                if (nrOfGuesses < 10 && letterCorrect < randomWord.Length)
                 {
+                   
 
-                
-                    if (playersGuess == randomWord[j])
+                    for (int i = 0;  i < randomWord.Length; i++)
                     {
-                    
-                    lettersGuessed[j] = playersGuess;
+
+                        if (playersGuess == randomWord[i])
+                        {
+                            lettersGuessed[i] = playersGuess;
+                            letterCorrect++;
+
+                        }
+
+                        else
+                        {
+                            wrongLetters.Append(playersGuess);
+                        }
+  
+                       
                     }
+                    Console.WriteLine(lettersGuessed);
+
+                    // ++ add - Console.WriteLine(wrongLetters);
                 }
-                Console.WriteLine(lettersGuessed);
-                r++;
-               
+         
+                else
+                {
+                    gameOver = true;
+                }
 
             }//while
 
-           
+
             Console.WriteLine("Game over!");
 
         }//end of GuessLetter
