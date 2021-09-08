@@ -34,65 +34,68 @@ namespace Hangman
         {
 
             StringBuilder wrongLetters = new StringBuilder();
-            char[] lettersGuessed = new char[randomWord.Length];
+            char[] rightLetters = new char[randomWord.Length];
             //++Ability to add whole word
             int nrOfGuesses = 0;
-            int letterCorrect = 0;
+            int countCorrect = 0;
             bool gameOver = false;
             char playersGuess;
 
+
             for (int i = 0; i < randomWord.Length; i++)
             {
-                lettersGuessed[i] = '_';
-
+                rightLetters[i] = '_';
             }
 
-           
+
             while (!gameOver)
-
             {
-                Console.WriteLine("Guess a letter.");
-                playersGuess = char.Parse(Console.ReadLine());
-                nrOfGuesses++;
-
                 //++Exceptionhandling 
 
-
-                if (nrOfGuesses < 10 && letterCorrect < randomWord.Length)
+                if (nrOfGuesses < 10 && countCorrect < randomWord.Length)
                 {
-                   
 
-                    for (int i = 0;  i < randomWord.Length; i++)
+                    Console.WriteLine("Guess a letter.");
+
+                    playersGuess = char.Parse(Console.ReadLine());
+                    nrOfGuesses++;
+
+                    for (int i = 0; i < randomWord.Length; i++)
                     {
 
                         if (playersGuess == randomWord[i])
                         {
-                            lettersGuessed[i] = playersGuess;
-                            letterCorrect++;
-
+                            rightLetters[i] = playersGuess;
+                            countCorrect++;
                         }
+
 
                         else
                         {
                             wrongLetters.Append(playersGuess);
+                                                      
                         }
-  
-                       
-                    }
-                    Console.WriteLine(lettersGuessed);
 
+
+                    }
+                    Console.WriteLine(rightLetters);
+                    
                     // ++ add - Console.WriteLine(wrongLetters);
-                }
-         
+                }//end of if 
+
+
+
                 else
                 {
                     gameOver = true;
+                    Console.WriteLine("Game over!");
                 }
 
-            }//while
+            }//end of while
+
+           
 
 
-            Console.WriteLine("Game over!");
 
         }//end of GuessLetter
     }//end of class
