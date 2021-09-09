@@ -39,7 +39,8 @@ namespace Hangman
             int nrOfGuesses = 0;
             int countCorrect = 0;
             bool gameOver = false;
-            char playersGuess;
+            bool won = false;
+            char guess;
 
 
             for (int i = 0; i < randomWord.Length; i++)
@@ -48,54 +49,73 @@ namespace Hangman
             }
 
 
-            while (!gameOver)
+            while (!gameOver && !won)
             {
                 //++Exceptionhandling 
+                               
 
                 if (nrOfGuesses < 10 && countCorrect < randomWord.Length)
                 {
 
                     Console.WriteLine("Guess a letter.");
 
-                    playersGuess = char.Parse(Console.ReadLine());
+                    guess = char.Parse(Console.ReadLine());
                     nrOfGuesses++;
 
                     for (int i = 0; i < randomWord.Length; i++)
                     {
 
-                        if (playersGuess == randomWord[i])
+                        if (guess == randomWord[i])
                         {
-                            rightLetters[i] = playersGuess;
+                            rightLetters[i] = guess;
                             countCorrect++;
+
+                            if (countCorrect == randomWord.Length)
+                            {
+                                won = true;
+                            }
                         }
 
 
                         else
                         {
-                            wrongLetters.Append(playersGuess);
-                                                      
+                            wrongLetters.Append(guess);
+
                         }
 
 
                     }
                     Console.WriteLine(rightLetters);
+
                     
+
                     // ++ add - Console.WriteLine(wrongLetters);
                 }//end of if 
-
 
 
                 else
                 {
                     gameOver = true;
-                    Console.WriteLine("Game over!");
                 }
+
+               
 
             }//end of while
 
+
+            // ++ add - Console.WriteLine(wrongLetters);
+
+            gameOver = true;
+            Console.WriteLine("Game over!");
            
-
-
+             if (won)
+             {
+                 Console.WriteLine("You won!");
+             }
+             else
+             {
+                 Console.WriteLine("You lost!");
+             }
 
         }//end of GuessLetter
     }//end of class
