@@ -39,7 +39,7 @@ namespace Hangman
             bool gameOver = false;
             bool won = false;
             char guess;
-            string input; 
+            string input;
 
 
             for (int i = 0; i < randomWord.Length; i++)
@@ -53,8 +53,8 @@ namespace Hangman
                 //++Exceptionhandling                                
 
                 if (nrOfGuesses < 10 && countCorrect < randomWord.Length)
-                { 
-                    Console.WriteLine("Guess a letter.");
+                {
+                    Console.WriteLine("Guess a letter or the word.");
                     input = Console.ReadLine();
                     guess = input[0];
 
@@ -88,9 +88,11 @@ namespace Hangman
                             }
 
                         }
-                        Console.WriteLine(rightLetters);
-                        nrOfGuesses++;
                     }
+
+                    string outputRight = string.Join(" ", rightLetters);
+                    Console.WriteLine(outputRight);
+                    nrOfGuesses++;
                     // ++ add - Console.WriteLine(wrongLetters);
                 }//end of if 
 
@@ -100,7 +102,7 @@ namespace Hangman
                     gameOver = true;
                 }
 
-               
+
 
             }//end of while
 
@@ -109,15 +111,15 @@ namespace Hangman
 
             gameOver = true;
             Console.WriteLine("Game over!");
-           
-             if (won)
-             {
-                 Console.WriteLine("You won!");
-             }
-             else
-             {
-                 Console.WriteLine("You lost!");
-             }
+
+            if (won)
+            {
+                Console.WriteLine("You won!");
+            }
+            else
+            {
+                Console.WriteLine("You lost!");
+            }
 
         }//end of GuessLetter
     }//end of class
