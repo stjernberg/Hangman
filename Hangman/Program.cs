@@ -33,7 +33,6 @@ namespace Hangman
 
             StringBuilder wrongLetters = new StringBuilder();
             char[] rightLetters = new char[randomWord.Length];
-            //++Ability to add whole word
             int nrOfGuesses = 0;
             int countCorrect = 0;
             bool gameOver = false;
@@ -84,7 +83,10 @@ namespace Hangman
 
                             else
                             {
-                                wrongLetters.Append(guess);
+                                if (!randomWord.ToString().Contains(guess) && !wrongLetters.ToString().Contains(guess))
+                                {
+                                    wrongLetters.Append(guess);
+                                }
                             }
 
                         }
@@ -92,9 +94,16 @@ namespace Hangman
 
                     string outputRight = string.Join(" ", rightLetters);
                     Console.WriteLine(outputRight);
+                    wrongLetters.Append(" ");
+                    Console.WriteLine("Letters guessed wrong: " + wrongLetters);
                     nrOfGuesses++;
                     // ++ add - Console.WriteLine(wrongLetters);
                 }//end of if 
+
+
+                     
+
+            
 
 
                 else
@@ -105,6 +114,7 @@ namespace Hangman
 
 
             }//end of while
+
 
 
             // ++ add - Console.WriteLine(wrongLetters);
