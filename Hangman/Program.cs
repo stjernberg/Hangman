@@ -25,9 +25,7 @@ namespace Hangman
             string randomWord = words[index];
 
             Console.WriteLine(randomWord);
-
             GuessLetter(randomWord);
-
         }
 
         static void GuessLetter(String randomWord)
@@ -41,6 +39,7 @@ namespace Hangman
             bool gameOver = false;
             bool won = false;
             char guess;
+            string input; 
 
 
             for (int i = 0; i < randomWord.Length; i++)
@@ -51,44 +50,47 @@ namespace Hangman
 
             while (!gameOver && !won)
             {
-                //++Exceptionhandling 
-                               
+                //++Exceptionhandling                                
 
                 if (nrOfGuesses < 10 && countCorrect < randomWord.Length)
-                {
-
+                { 
                     Console.WriteLine("Guess a letter.");
+                    input = Console.ReadLine();
+                    guess = input[0];
 
-                    guess = char.Parse(Console.ReadLine());
-                    nrOfGuesses++;
-
-                    for (int i = 0; i < randomWord.Length; i++)
+                    if (input.Length > 1)
                     {
-
-                        if (guess == randomWord[i])
+                        if (input == randomWord)
                         {
-                            rightLetters[i] = guess;
-                            countCorrect++;
-
-                            if (countCorrect == randomWord.Length)
-                            {
-                                won = true;
-                            }
+                            won = true;
+                            gameOver = true;
                         }
-
-
-                        else
-                        {
-                            wrongLetters.Append(guess);
-
-                        }
-
-
                     }
-                    Console.WriteLine(rightLetters);
 
-                    
+                    else
+                    {
+                        for (int i = 0; i < randomWord.Length; i++)
+                        {
+                            if (guess == randomWord[i])
+                            {
+                                rightLetters[i] = guess;
+                                countCorrect++;
 
+                                if (countCorrect == randomWord.Length)
+                                {
+                                    won = true;
+                                }
+                            }
+
+                            else
+                            {
+                                wrongLetters.Append(guess);
+                            }
+
+                        }
+                        Console.WriteLine(rightLetters);
+                        nrOfGuesses++;
+                    }
                     // ++ add - Console.WriteLine(wrongLetters);
                 }//end of if 
 
