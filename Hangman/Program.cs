@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Hangman
 {
@@ -14,7 +15,7 @@ namespace Hangman
                 Console.WriteLine(" Press 'Enter' to start the game");
             }
 
-           GetRandomWord();
+            GetRandomWord();
         }
 
         static void GetRandomWord()
@@ -39,6 +40,7 @@ namespace Hangman
             bool won = false;
             char guess;
             string input;
+           
 
 
             for (int i = 0; i < randomWord.Length; i++)
@@ -48,64 +50,73 @@ namespace Hangman
 
 
             while (!gameOver && !won)
-            {
-                //++Exceptionhandling                                
+            {                          
 
                 if (nrOfGuesses > 0 && countCorrect < randomWord.Length)
                 {
+
                     Console.WriteLine("Guess a letter or the word.");
-                    input = Console.ReadLine().ToUpper(); 
+                    input = Console.ReadLine().ToUpper();
                     guess = input[0];
 
-                    if (input.Length > 1)
+                    if (((guess >= 'A' && guess <= 'Z') || (guess >= 'a' && guess <= 'z')))
                     {
-                        if (input == randomWord)
+                                               
+                        if (input.Length > 1)
                         {
-                            won = true;
-                            gameOver = true;
+                            if (input == randomWord)
+                            {
+                                won = true;
+                                gameOver = true;
+                            }
                         }
-                    }
 
-                    else
-                    {
-                        for (int i = 0; i < randomWord.Length; i++)
+                        else
                         {
-                            if (guess == randomWord[i])
+                            for (int i = 0; i < randomWord.Length; i++)
                             {
-                                rightLetters[i] = guess;
-                                countCorrect++;
-
-                                if (countCorrect == randomWord.Length)
+                                if (guess == randomWord[i])
                                 {
-                                    won = true;
-                                }
-                            }
+                                    rightLetters[i] = guess;
+                                    countCorrect++;
 
-                            else
-                            {
-                                if (!randomWord.ToString().Contains(guess) && !wrongLetters.ToString().Contains(guess))
+                                    if (countCorrect == randomWord.Length)
+                                    {
+                                        won = true;
+                                    }
+                                }
+
+                                else
                                 {
-                                    wrongLetters.Append(guess);
+                                    if (!randomWord.ToString().Contains(guess) && !wrongLetters.ToString().Contains(guess))
+                                    {
+                                        wrongLetters.Append(guess + " ");
+                                    }
                                 }
-                            }
 
+                            }
                         }
-                    }
+                        nrOfGuesses--;
 
-                    string outputRight = string.Join(" ", rightLetters);
-                    //wrongLetters.Append(" ");
-                    Console.WriteLine($"{outputRight} \nLetters guessed wrong: {wrongLetters} \nYou have {nrOfGuesses} guesses left");
-                    nrOfGuesses--;
-                    
-                }//end of if         
-
+                        string outputRight = string.Join(" ", rightLetters);
+                        Console.WriteLine($"{outputRight} \nLetters guessed wrong: {wrongLetters}");
+                        Console.WriteLine((nrOfGuesses > 0) ? $"You have { nrOfGuesses} guesses left" : "");
+                       
+                }
                 else
                 {
-                    gameOver = true;
+                    Console.WriteLine("Invalid Input");
                 }
 
+            }//end of outer if         
 
-            }//end of while
+            else
+             {
+                 gameOver = true;
+             }
+
+
+            }//end of while gameOver
 
             gameOver = true;
             Console.WriteLine("Game over!");
