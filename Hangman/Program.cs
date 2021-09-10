@@ -12,7 +12,9 @@ namespace Hangman
 
             while (Console.ReadKey().Key != ConsoleKey.Enter)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(" Press 'Enter' to start the game");
+                Console.ResetColor();
             }
 
             GetRandomWord();
@@ -33,6 +35,7 @@ namespace Hangman
         {
 
             StringBuilder wrongLetters = new StringBuilder();
+            StringBuilder typedLetters = new StringBuilder();
             char[] rightLetters = new char[randomWord.Length];
             int nrOfGuesses = 10;
             int countCorrect = 0;
@@ -40,7 +43,6 @@ namespace Hangman
             bool won = false;
             char guess;
             string input;
-           
 
 
             for (int i = 0; i < randomWord.Length; i++)
@@ -50,18 +52,19 @@ namespace Hangman
 
 
             while (!gameOver && !won)
-            {                          
+            {
 
                 if (nrOfGuesses > 0 && countCorrect < randomWord.Length)
                 {
-
+              
                     Console.WriteLine("Guess a letter or the word.");
                     input = Console.ReadLine().ToUpper();
                     guess = input[0];
 
-                    if (((guess >= 'A' && guess <= 'Z') || (guess >= 'a' && guess <= 'z')))
+                   
+                    if (Char.IsLetter(guess) && !typedLetters.ToString().Contains(guess))
                     {
-                                               
+
                         if (input.Length > 1)
                         {
                             if (input == randomWord)
@@ -75,6 +78,9 @@ namespace Hangman
                         {
                             for (int i = 0; i < randomWord.Length; i++)
                             {
+
+                                typedLetters.Append(guess);
+
                                 if (guess == randomWord[i])
                                 {
                                     rightLetters[i] = guess;
@@ -83,44 +89,57 @@ namespace Hangman
                                     if (countCorrect == randomWord.Length)
                                     {
                                         won = true;
+                                        gameOver = true;
                                     }
                                 }
 
                                 else
                                 {
-                                    if (!randomWord.ToString().Contains(guess) && !wrongLetters.ToString().Contains(guess))
+                                    if (!randomWord.Contains(guess) && !wrongLetters.ToString().Contains(guess))
                                     {
                                         wrongLetters.Append(guess + " ");
                                     }
+
                                 }
 
                             }
                         }
                         nrOfGuesses--;
 
-                        string outputRight = string.Join(" ", rightLetters);
-                        Console.WriteLine($"{outputRight} \nLetters guessed wrong: {wrongLetters}");
-                        Console.WriteLine((nrOfGuesses > 0) ? $"You have { nrOfGuesses} guesses left" : "");
-                       
-                }
+                        if (!gameOver && !won)
+                        {
+                            string outputRight = string.Join(" ", rightLetters);
+                            Console.WriteLine($"{outputRight} \nLetters guessed wrong: {wrongLetters}");
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine((nrOfGuesses > 0) ? $"You have { nrOfGuesses} guesses left" : "");
+                            Console.ResetColor();
+                        }
+
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write ((Char.IsLetter(guess)) ? $"You already guessed letter {guess}." : "Input must be a letter or a word."); 
+                        Console.WriteLine(" Please try again!");
+                        Console.ResetColor();
+                    }
+
+                }//end of outer if         
+
                 else
                 {
-                    Console.WriteLine("Invalid Input");
+                    gameOver = true;
                 }
-
-            }//end of outer if         
-
-            else
-             {
-                 gameOver = true;
-             }
 
 
             }//end of while gameOver
 
-            gameOver = true;
+
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("Game over!");
-            Console.WriteLine((won) ? "You won!" : "You lost!");
+            Console.Write((won) ? "You won!" : "You lost!");
+            Console.WriteLine("The correct word was " + randomWord);
+            Console.ResetColor();
 
         }//end of GuessLetter
     }//end of class
