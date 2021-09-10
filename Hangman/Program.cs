@@ -14,26 +14,26 @@ namespace Hangman
                 Console.WriteLine(" Press 'Enter' to start the game");
             }
 
-            ChooseWord();
+           GetRandomWord();
         }
 
-        static void ChooseWord()
+        static void GetRandomWord()
         {
             string[] words = new string[] { "car", "boat", "windsurfer", "red", "program", "holiday", "christmas", "summer", "winter" };
             Random rand = new Random();
             int index = rand.Next(words.Length);
-            string randomWord = words[index];
-
+            string random = words[index];
+            string randomWord = random.ToUpper();
             Console.WriteLine(randomWord);
-            GuessLetter(randomWord);
+            GuessLetterOrWord(randomWord);
         }
 
-        static void GuessLetter(String randomWord)
+        static void GuessLetterOrWord(String randomWord)
         {
 
             StringBuilder wrongLetters = new StringBuilder();
             char[] rightLetters = new char[randomWord.Length];
-            int nrOfGuesses = 0;
+            int nrOfGuesses = 10;
             int countCorrect = 0;
             bool gameOver = false;
             bool won = false;
@@ -51,10 +51,10 @@ namespace Hangman
             {
                 //++Exceptionhandling                                
 
-                if (nrOfGuesses < 10 && countCorrect < randomWord.Length)
+                if (nrOfGuesses > 0 && countCorrect < randomWord.Length)
                 {
                     Console.WriteLine("Guess a letter or the word.");
-                    input = Console.ReadLine();
+                    input = Console.ReadLine().ToUpper(); 
                     guess = input[0];
 
                     if (input.Length > 1)
@@ -93,18 +93,11 @@ namespace Hangman
                     }
 
                     string outputRight = string.Join(" ", rightLetters);
-                    Console.WriteLine(outputRight);
-                    wrongLetters.Append(" ");
-                    Console.WriteLine("Letters guessed wrong: " + wrongLetters);
-                    nrOfGuesses++;
-                    // ++ add - Console.WriteLine(wrongLetters);
-                }//end of if 
-
-
-                     
-
-            
-
+                    //wrongLetters.Append(" ");
+                    Console.WriteLine($"{outputRight} \nLetters guessed wrong: {wrongLetters} \nYou have {nrOfGuesses} guesses left");
+                    nrOfGuesses--;
+                    
+                }//end of if         
 
                 else
                 {
@@ -112,24 +105,11 @@ namespace Hangman
                 }
 
 
-
             }//end of while
-
-
-
-            // ++ add - Console.WriteLine(wrongLetters);
 
             gameOver = true;
             Console.WriteLine("Game over!");
-
-            if (won)
-            {
-                Console.WriteLine("You won!");
-            }
-            else
-            {
-                Console.WriteLine("You lost!");
-            }
+            Console.WriteLine((won) ? "You won!" : "You lost!");
 
         }//end of GuessLetter
     }//end of class
