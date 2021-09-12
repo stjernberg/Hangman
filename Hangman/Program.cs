@@ -21,7 +21,7 @@ namespace Hangman
 
         static void GetRandomWord()
         {
-            string[] words = new string[] { "car", "boat", "windsurfer", "red", "program", "holiday", "christmas", "summer", "winter" };
+            string[] words = new string[] { "summer", "letters" }; //"car", "boat", "windsurfer", "red", "program", "holiday", "christmas", "winter"
             Random rand = new Random();
             int index = rand.Next(words.Length);
             string random = words[index];
@@ -42,7 +42,6 @@ namespace Hangman
             char guess;
             string input;
 
-
             for (int i = 0; i < randomWord.Length; i++)
             {
                 rightLetters[i] = '_';
@@ -53,8 +52,8 @@ namespace Hangman
                 Console.WriteLine("Guess a letter or the word.");
                 input = Console.ReadLine().ToUpper();
                 guess = input[0];
+                bool errorMessage = false;
                 
-
                 if (input.Length > 1)
                 {
                     if (input == randomWord)
@@ -78,15 +77,20 @@ namespace Hangman
 
                         for (int i = 0; i < randomWord.Length; i++)
                         {
-
                             typedLetters.Append(guess);
 
                             if (guess == randomWord[i])
                             {
                                 rightLetters[i] = guess;
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                Console.WriteLine("Yeah, the letter is in the word!");
-                                Console.ResetColor();
+
+                                if (!errorMessage)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Green;
+                                    Console.WriteLine("Yeah, the letter is in the word!");
+                                    Console.ResetColor();
+                                    errorMessage = true;
+                                }
+
 
                                 if (rightLetters.ToString().Length == randomWord.Length)
                                 {
@@ -94,20 +98,19 @@ namespace Hangman
                                     gameOver = true;
                                 }
                             }
-
                             else
                             {
                                 if (!randomWord.Contains(guess) && !wrongLetters.ToString().Contains(guess))
                                 {
                                     wrongLetters.Append(guess + " ");
+
                                     Console.ForegroundColor = ConsoleColor.Red;
-                                    Console.WriteLine("Wrong letter, try again!");
+                                    Console.WriteLine("Wrong letter!");
                                     Console.ResetColor();
                                 }
-
                             }
-
                         }
+
                         nrOfGuesses--;
                     }
 
@@ -128,7 +131,7 @@ namespace Hangman
                     Console.WriteLine((nrOfGuesses > 0) ? $"You have { nrOfGuesses} guesses left" : "");
                     Console.ResetColor();
                 }
-              
+
             }//end of while gameOver
 
 
