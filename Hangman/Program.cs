@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Hangman
 {
@@ -38,7 +37,6 @@ namespace Hangman
             StringBuilder typedLetters = new StringBuilder();
             char[] rightLetters = new char[randomWord.Length];
             int nrOfGuesses = 10;
-            int countCorrect = 0;
             bool gameOver = false;
             bool won = false;
             char guess;
@@ -50,88 +48,73 @@ namespace Hangman
                 rightLetters[i] = '_';
             }
 
-
-            while (!gameOver && !won)
+            while (!gameOver && !won && nrOfGuesses > 0)
             {
+                Console.WriteLine("Guess a letter or the word.");
+                input = Console.ReadLine().ToUpper();
+                guess = input[0];
+                nrOfGuesses--;
 
-                if (nrOfGuesses > 0 && countCorrect < randomWord.Length)
+                if (input.Length > 1)
                 {
-              
-                    Console.WriteLine("Guess a letter or the word.");
-                    input = Console.ReadLine().ToUpper();
-                    guess = input[0];
-
-                   
-                    if (Char.IsLetter(guess) && !typedLetters.ToString().Contains(guess))
+                    if (input == randomWord)
                     {
-
-                        if (input.Length > 1)
-                        {
-                            if (input == randomWord)
-                            {
-                                won = true;
-                                gameOver = true;
-                            }
-                        }
-
-                        else
-                        {
-                            for (int i = 0; i < randomWord.Length; i++)
-                            {
-
-                                typedLetters.Append(guess);
-
-                                if (guess == randomWord[i])
-                                {
-                                    rightLetters[i] = guess;
-                                    countCorrect++;
-
-                                    if (countCorrect == randomWord.Length)
-                                    {
-                                        won = true;
-                                        gameOver = true;
-                                    }
-                                }
-
-                                else
-                                {
-                                    if (!randomWord.Contains(guess) && !wrongLetters.ToString().Contains(guess))
-                                    {
-                                        wrongLetters.Append(guess + " ");
-                                    }
-
-                                }
-
-                            }
-                        }
-                        nrOfGuesses--;
-
-                        if (!gameOver && !won)
-                        {
-                            string outputRight = string.Join(" ", rightLetters);
-                            Console.WriteLine($"{outputRight} \nLetters guessed wrong: {wrongLetters}");
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine((nrOfGuesses > 0) ? $"You have { nrOfGuesses} guesses left" : "");
-                            Console.ResetColor();
-                        }
-
+                        won = true;
+                        gameOver = true;
                     }
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.Write ((Char.IsLetter(guess)) ? $"You already guessed letter {guess}." : "Input must be a letter or a word."); 
-                        Console.WriteLine(" Please try again!");
-                        Console.ResetColor();
-                    }
-
-                }//end of outer if         
+                }
 
                 else
                 {
-                    gameOver = true;
+                    if (Char.IsLetter(guess) && !typedLetters.ToString().Contains(guess))
+                    {
+
+                        for (int i = 0; i < randomWord.Length; i++)
+                        {
+
+                            typedLetters.Append(guess);
+
+                            if (guess == randomWord[i])
+                            {
+                                rightLetters[i] = guess;
+                               
+                                if (rightLetters.ToString().Length == randomWord.Length)
+                                {
+                                    won = true;
+                                    gameOver = true;
+                                }
+                            }
+
+                            else
+                            {
+                                if (!randomWord.Contains(guess) && !wrongLetters.ToString().Contains(guess))
+                                {
+                                    wrongLetters.Append(guess + " ");
+                                }
+
+                            }
+
+                        }
+                    }
+
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write((Char.IsLetter(guess)) ? $"You already guessed letter {guess}." : "Input must be a letter or a word.");
+                        Console.WriteLine(" Please try again!");
+                        Console.ResetColor();
+                    }
                 }
 
-
+                if (!gameOver && !won)
+                {
+                    string outputRight = string.Join(" ", rightLetters);
+                    Console.WriteLine($"{outputRight} \nLetters guessed wrong: {wrongLetters}");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine((nrOfGuesses > 0) ? $"You have { nrOfGuesses} guesses left" : "");
+                    Console.ResetColor();
+                }
+              
             }//end of while gameOver
 
 
