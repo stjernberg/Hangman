@@ -53,7 +53,7 @@ namespace Hangman
                 Console.WriteLine("Guess a letter or the word.");
                 input = Console.ReadLine().ToUpper();
                 guess = input[0];
-                nrOfGuesses--;
+                
 
                 if (input.Length > 1)
                 {
@@ -61,6 +61,13 @@ namespace Hangman
                     {
                         won = true;
                         gameOver = true;
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Wrong word, try again!");
+                        Console.ResetColor();
+                        nrOfGuesses--;
                     }
                 }
 
@@ -77,7 +84,10 @@ namespace Hangman
                             if (guess == randomWord[i])
                             {
                                 rightLetters[i] = guess;
-                               
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.WriteLine("Yeah, the letter is in the word!");
+                                Console.ResetColor();
+
                                 if (rightLetters.ToString().Length == randomWord.Length)
                                 {
                                     won = true;
@@ -90,11 +100,15 @@ namespace Hangman
                                 if (!randomWord.Contains(guess) && !wrongLetters.ToString().Contains(guess))
                                 {
                                     wrongLetters.Append(guess + " ");
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.WriteLine("Wrong letter, try again!");
+                                    Console.ResetColor();
                                 }
 
                             }
 
                         }
+                        nrOfGuesses--;
                     }
 
                     else
