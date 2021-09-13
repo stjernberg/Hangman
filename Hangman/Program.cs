@@ -56,9 +56,6 @@ namespace Hangman
                 guess = input[0];
                 bool errorMessage = false;
 
-
-              
-
                 if (input.Length > 1)
                 {
                     if (input == randomWord)
