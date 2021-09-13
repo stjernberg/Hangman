@@ -21,12 +21,11 @@ namespace Hangman
 
         static void GetRandomWord()
         {
-            string[] words = new string[] { "summer", "letters" }; //"car", "boat", "windsurfer", "red", "program", "holiday", "christmas", "winter"
+            string[] words = new string[] { "summer", "car", "boat", "windsurfer", "red", "program", "holiday", "christmas", "winter", "letters" }; 
             Random rand = new Random();
             int index = rand.Next(words.Length);
             string random = words[index];
             string randomWord = random.ToUpper();
-            Console.WriteLine(randomWord);
             GuessLetterOrWord(randomWord);
         }
 
@@ -47,13 +46,19 @@ namespace Hangman
                 rightLetters[i] = '_';
             }
 
+            string showNrOfLetter = string.Join(" ", rightLetters);
+            Console.WriteLine(showNrOfLetter);
+
             while (!gameOver && !won && nrOfGuesses > 0)
             {
                 Console.WriteLine("Guess a letter or the word.");
                 input = Console.ReadLine().ToUpper();
                 guess = input[0];
                 bool errorMessage = false;
-                
+
+
+              
+
                 if (input.Length > 1)
                 {
                     if (input == randomWord)
